@@ -21,33 +21,37 @@ function getHumanChoice() {
 function playRound(humanChoice, computerChoice, scores) {
     //invalid input
     if (humanChoice == undefined) {
-        console.log("Invalid,input!No game played");
-        return scores;
+
+        resultMessage.textContent="Invalid,input!No game played";
+        return;
+
     }
 
 
     //draw
     if (humanChoice == computerChoice) {
-        console.log("Draw!");
-        return scores;
+        resultMessage.textContent="Draw!";
+        return;
+
     }
 
     //wins
     if ((humanChoice == "rock" && computerChoice == "scissors") || (humanChoice == "paper" && computerChoice == "rock") || (humanChoice == "scissors" && computerChoice == "paper")) {
-        console.log(`You win! ${humanChoice} beats ${computerChoice}`);
+        resultMessage.textContent=`You win! ${humanChoice} beats ${computerChoice}`;
         scores.humanScore++;
-        return scores;
+        return;
+
     }
 
 
-    console.log(`You lose! ${computerChoice} beats ${humanChoice}`);
+    resultMessage.textContent=`You lose! ${computerChoice} beats ${humanChoice}`;
     scores.computerScore++;
-    return scores;
+
 
 }
 
 
-
+/*
 function playGame() {
 
     // initialisation of scores
@@ -57,14 +61,12 @@ function playGame() {
     };
 
 
-    //Play 5 rounds
-    for (let i = 0; i < 5; i++) {
 
-        let humanSelection = getHumanChoice();
-        let computerSelection = getComputerChoice();
+    let humanSelection = getHumanChoice();
+    let computerSelection = getComputerChoice();
 
-        scores = playRound(humanSelection, computerSelection, scores);
-    }
+    scores = playRound(humanSelection, computerSelection, scores);
+
 
 
     if (scores.humanScore > scores.computerScore) {
@@ -76,3 +78,51 @@ function playGame() {
     }
 
 }
+*/
+// initialisation of scores
+let scores = {
+    humanScore: 0,
+    computerScore: 0
+};
+
+//button logic
+const rockButton = document.querySelector(".Rock");
+
+const paperButton = document.querySelector(".Paper");
+
+const scissorsButton = document.querySelector(".Scissors");
+
+
+//Display the running score, and announce a winner of the game once one player reaches 5 points.
+function updateScoreDisplay(scores) {
+    scoreDisplay.textContent = `Human: ${scores.humanScore}, Computer: ${scores.computerScore}`;
+    if (scores.humanScore === 5) {
+        resultMessage.textContent = "Congratulations! You won the game!";
+
+    } else if (scores.computerScore === 5) {
+        resultMessage.textContent = "Game over! The computer won the game.";
+
+    }
+}
+
+rockButton.addEventListener("click", () => { 
+    playRound("rock", getComputerChoice(), scores);
+    updateScoreDisplay(scores);
+ });
+
+paperButton.addEventListener("click", () => { 
+    playRound("paper", getComputerChoice(), scores);
+    updateScoreDisplay(scores);
+ });
+
+scissorsButton.addEventListener("click", () => { 
+    playRound("scissors", getComputerChoice(), scores);
+    updateScoreDisplay(scores);
+ });
+
+
+//get the div for the result-message to say who wins
+const resultMessage = document.querySelector(".result-message");
+const scoreDisplay = document.querySelector(".score");
+
+
